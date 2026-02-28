@@ -1,17 +1,12 @@
 import streamlit as st
 import speech_recognition as sr
-from transformers import pipeline
 
 st.title("🎙 Lecture Voice-to-Notes Generator")
 
-@st.cache_resource
-def load_model():
-    return pipeline(
-        "summarization",
-        model="facebook/bart-large-cnn"
-    )
-
-summarizer = load_model()
+def simple_summarizer(text):
+    sentences = text.split(".")
+    summary = ". ".join(sentences[:3])
+    return summary
 
 uploaded_file = st.file_uploader("Upload Audio File (WAV format)", type=["wav"])
 
@@ -28,15 +23,10 @@ if uploaded_file is not None:
         st.write(text)
 
         if len(text) > 50:
-            summary = summarizer(
-                text,
-                max_length=120,
-                min_length=30,
-                do_sample=False
-            )
+            summary = simple_summarizer(text)
 
             st.subheader("📝 Summary")
-            st.write(summary[0]['summary_text'])
+            st.write(summary)
         else:
             st.warning("Text too short for summarization.")
 
