@@ -1,5 +1,2 @@
-streamlit==1.32.2
+streamlit
 speechrecognition
-transformers==4.37.2
-torch
-sentencepiece
